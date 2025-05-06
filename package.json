@@ -1,0 +1,22 @@
+{
+  "name": "ration_card_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dheeksha2010/ration_card.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dheeksha2010/ration_card/issues"
+  },
+  "homepage": "https://github.com/dheeksha2010/ration_card#readme"
+}
