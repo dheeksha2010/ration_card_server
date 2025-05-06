@@ -4,7 +4,17 @@ const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
-app.use(cors());
+
+// ✅ Allow only your frontend origin
+app.use(cors({
+    origin: 'https://meepansewa.co.in',
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
+}));
+
+// ✅ Handle preflight requests for the API endpoint
+app.options('/api/getRationData', cors());
+
 app.use(express.json());
 
 app.post('/api/getRationData', async (req, res) => {
@@ -112,7 +122,7 @@ app.post('/api/getRationData', async (req, res) => {
             await page.waitForSelector(rationCardRadioButtonSelector, { timeout: 15000 });
 
             let radioButtonClicked = false;
-            for (let i = 0; i < 2; i++) { // Try clicking twice
+            for (let i = 0; i < 2; i++) {
                 await page.click(rationCardRadioButtonSelector);
                 log(`🖱️ Clicked Ration Card radio button (Attempt ${i + 1}).`);
                 try {
@@ -206,7 +216,6 @@ app.post('/api/getRationData', async (req, res) => {
                 };
             });
 
-            // Extract members from #dashboarddata2b
             members = await page.evaluate(() => {
                 const table = document.querySelector('#dashboarddata2b');
                 if (!table) return [];
@@ -214,7 +223,7 @@ app.post('/api/getRationData', async (req, res) => {
                 const rows = table.querySelectorAll('tr');
                 const memberList = [];
 
-                for (let i = 2; i < rows.length; i++) { // Skip headers
+                for (let i = 2; i < rows.length; i++) {
                     const cols = rows[i].querySelectorAll('td');
                     if (cols.length >= 2) {
                         const sno = cols[0].innerText.trim();
