@@ -1,22 +1,18 @@
 {
   "name": "ration_card_project",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automated Ration Card details fetcher using Puppeteer and Express",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dheeksha2010/ration_card.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/dheeksha2010/ration_card/issues"
-  },
-  "homepage": "https://github.com/dheeksha2010/ration_card#readme"
+  "keywords": ["express", "puppeteer", "ration card", "automation"],
+  "author": "dheeksha2010",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "puppeteer": "^21.3.8",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5"
+  }
 }
