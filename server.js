@@ -1,25 +1,27 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { chromium } = require('playwright-chromium'); // Updated import
+const { chromium } = require('playwright-chromium');
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// CORS setup to allow frontend requests
+// ✅ CORS - Allow frontend domain
 app.use(cors({
-  origin: 'https://meepansewa.co.in',
+  origin: 'https://meepansewa.co.in',  // Allow only this origin
   methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type']
+  allowedHeaders: ['Content-Type'],
+  credentials: true // Allow cookies and other credentials if needed
 }));
+
 app.use(bodyParser.json());
 
-// Test endpoint to check if server is running
+// ✅ Test endpoint
 app.get('/', (req, res) => {
   res.json({ message: 'Hello from API!' });
 });
 
-// Post endpoint for Playwright automation
+// ✅ POST endpoint for Playwright automation
 app.post('/api', async (req, res) => {
   const { rationCard } = req.body;
 
@@ -29,13 +31,13 @@ app.post('/api', async (req, res) => {
 
   try {
     const browser = await chromium.launch({
-      headless: true, 
-      args: ['--no-sandbox', '--disable-setuid-sandbox'] // Add these args for Render's environment
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    // Use your target URL for navigation (update this as necessary)
+    // Example URL (replace with your actual automation logic)
     await page.goto('https://epds.telangana.gov.in/FoodSecurityAct/');
     const title = await page.title();
 
@@ -48,7 +50,7 @@ app.post('/api', async (req, res) => {
   }
 });
 
-// Start the server
+// ✅ Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
