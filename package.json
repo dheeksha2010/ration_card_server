@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Automated Ration Card details fetcher using Playwright and Express",
   "main": "server.js",
-  "scripts": {
-    "postinstall": "npx playwright install",
-    "start": "node server.js"
-  },
+ "scripts": {
+  "postinstall": "npx playwright install --with-deps",
+  "start": "node server.js"
+},
   "keywords": ["express", "playwright", "automation"],
   "author": "dheeksha2010",
   "license": "MIT",
