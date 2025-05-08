@@ -1,27 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { chromium } = require('playwright'); // ✅ Playwright import
+const { chromium } = require('playwright');
 
 const app = express();
-
-// Use Render's dynamic port
 const PORT = process.env.PORT || 10000;
 
-// ✅ CORS - Allow frontend domain
+// ✅ Proper CORS configuration
 app.use(cors({
   origin: 'https://meepansewa.co.in',
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type']
 }));
+
+// ✅ Handle preflight OPTIONS requests for all routes
+app.options('*', cors());
+
 app.use(bodyParser.json());
 
-// ✅ Test GET endpoint
+// ✅ Simple test route
 app.get('/', (req, res) => {
   res.json({ message: 'Hello from API!' });
 });
 
-// ✅ POST endpoint for automation using Playwright
+// ✅ Main Playwright POST route
 app.post('/api', async (req, res) => {
   const { rationCard } = req.body;
 
@@ -32,14 +34,14 @@ app.post('/api', async (req, res) => {
   try {
     const browser = await chromium.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'] // ✅ Required for Render
+      args: ['--no-sandbox', '--disable-setuid-sandbox'] // ✅ For Render
     });
 
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    // TODO: Replace with your actual navigation + logic
-   await page.goto('https://epds.telangana.gov.in/FoodSecurityAct/');
+    // ✅ Replace this with your actual automation steps
+    await page.goto('https://epds.telangana.gov.in/FoodSecurityAct/');
     const title = await page.title();
 
     await browser.close();
@@ -47,7 +49,10 @@ app.post('/api', async (req, res) => {
     res.json({ message: 'Automation successful', title });
   } catch (error) {
     console.error('❌ Playwright error:', error);
-    res.status(500).json({ error: 'Automation failed', details: error.message });
+    res.status(500).json({
+      error: 'Automation failed',
+      details: error.message
+    });
   }
 });
 
