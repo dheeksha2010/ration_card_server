@@ -4,7 +4,7 @@
   "description": "Automated Ration Card details fetcher using Puppeteer and Express",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "npx playwright install && node server.js"
   },
   "keywords": ["express", "puppeteer", "ration card", "automation"],
   "author": "dheeksha2010",
