@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { chromium } = require('playwright');
+const { chromium } = require('playwright-chromium'); // ✅ Correct
 
 const app = express();
 const PORT = process.env.PORT || 10000;
