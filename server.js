@@ -1,29 +1,25 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { chromium } = require('playwright-chromium'); // ✅ Correct
+const { chromium } = require('playwright-chromium'); // Updated import
 
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// ✅ Proper CORS configuration
+// CORS setup to allow frontend requests
 app.use(cors({
   origin: 'https://meepansewa.co.in',
-  methods: ['GET', 'POST', 'OPTIONS'],
+  methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type']
 }));
-
-// ✅ Handle preflight OPTIONS requests for all routes
-app.options('*', cors());
-
 app.use(bodyParser.json());
 
-// ✅ Simple test route
+// Test endpoint to check if server is running
 app.get('/', (req, res) => {
   res.json({ message: 'Hello from API!' });
 });
 
-// ✅ Main Playwright POST route
+// Post endpoint for Playwright automation
 app.post('/api', async (req, res) => {
   const { rationCard } = req.body;
 
@@ -33,14 +29,13 @@ app.post('/api', async (req, res) => {
 
   try {
     const browser = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'] // ✅ For Render
+      headless: true, 
+      args: ['--no-sandbox', '--disable-setuid-sandbox'] // Add these args for Render's environment
     });
-
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    // ✅ Replace this with your actual automation steps
+    // Use your target URL for navigation (update this as necessary)
     await page.goto('https://epds.telangana.gov.in/FoodSecurityAct/');
     const title = await page.title();
 
@@ -49,14 +44,11 @@ app.post('/api', async (req, res) => {
     res.json({ message: 'Automation successful', title });
   } catch (error) {
     console.error('❌ Playwright error:', error);
-    res.status(500).json({
-      error: 'Automation failed',
-      details: error.message
-    });
+    res.status(500).json({ error: 'Automation failed', details: error.message });
   }
 });
 
-// ✅ Start the server
+// Start the server
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
